@@ -1,11 +1,10 @@
 package com.siliconlabs.bledemo.home_screen.activities
 
 import android.Manifest
-import android.app.NotificationManager
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -20,20 +19,19 @@ import com.siliconlabs.bledemo.home_screen.viewmodels.MainActivityViewModel
 import com.siliconlabs.bledemo.home_screen.views.HidableBottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 open class MainActivity : BaseActivity(),
         BluetoothService.ServicesStateListener
 {
-    private lateinit var _binding:ActivityMainBinding
+    private lateinit var _binding: ActivityMainBinding
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var binding: BluetoothService.Binding
     var bluetoothService: BluetoothService? = null
         private set
 
     private val neededPermissions = mutableListOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-        )
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    )
 
     @RequiresApi(Build.VERSION_CODES.S)
     private val android12Permissions = listOf(
@@ -47,7 +45,6 @@ open class MainActivity : BaseActivity(),
 
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
-       // setContentView(R.layout.activity_main)
         setContentView(_binding.root)
         supportActionBar?.show()
 
@@ -85,7 +82,7 @@ open class MainActivity : BaseActivity(),
     }
 
     fun toggleMainNavigation(isOn: Boolean) {
-        if(isOn) {
+        if (isOn) {
             _binding.mainNavigation.show(instant = true)
         } else {
             _binding.mainNavigation.hide(instant = true)
@@ -172,12 +169,12 @@ open class MainActivity : BaseActivity(),
         }
     }
 
-    private fun isPermissionGranted(permission: String) : Boolean {
+    private fun isPermissionGranted(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private fun areBluetoothPermissionsGranted() : Boolean {
+    private fun areBluetoothPermissionsGranted(): Boolean {
         return android12Permissions.all { isPermissionGranted(it) }
     }
 
@@ -190,15 +187,5 @@ open class MainActivity : BaseActivity(),
 
     companion object {
         private const val PERMISSIONS_REQUEST_CODE = 400
-        // private const val IMPORT_EXPORT_CODE_VERSION = 20
     }
-//TODO: handle migration. See BTAPP-1285 for clarification.
-/*
-    private fun migrateGattDatabaseIfNeeded() {
-        if (BuildConfig.VERSION_CODE <= IMPORT_EXPORT_CODE_VERSION - 1) {
-            Migrator(this).migrate()
-        }
-    }
-*/
-
 }
